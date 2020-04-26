@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+绝影的URDF文件，使用ANYmal的命名方式，将所有规则和内容与ANYmal相统一以嵌入其强化学习算法系统
+数据来自SOLIDWORKS-URDF插件导入，但命名方式以及排版经过修改
+父版本：1123_Jewel
+
+__删除了关节的Safety项(20191118）
+__将外观mesh文件的路径修改为相对路径(20191118）
+__修正了RF_HIP的标签字符不全(20191119)
+__将mesh全部替换为obj文件(20191120)
+__在每条腿末端添加新的球状连杆“FOOT”以及与之相连的固定关节“ANKLE"(20191120)
+__使用新的来自Github的绝影URDF重新编写(20191123)
+__删除新模型中所有关节的Dynamic项(20191123)
+__加入宝石材质(20191123)
+__去除了所有的mesh文件调用并使用圆柱代替腿部连杆(20191125)
+__代替mesh文件的圆柱可能存在碰撞卡死问题，需要调试
+__把所有cylinder的长度调小了十倍以观察位置
+
+-->
+<robot name="jueying_model">
+
+    <material name="Obsidian"> 
+    	<color rgba="0.05 0.05 0.0 1.0"/> 
+    </material>
+    <material name="Lasurite"> 
+    	<color rgba="0.0 0.0 0.8 0.6"/> 
+    </material>
+    <material name="Canutillos"> 
+    	<color rgba="0.0 0.8 0.0 0.6"/> 
+    </material>
+    <material name="Pearl"> 
+    	<color rgba="0.7 0.75 0.75 1.0"/> 
+    </material>
+    <material name="Ruby"> 
+    	<color rgba="0.8 0.0 0.0 0.6"/> 
+    </material>
+
+    <material name="Diamond"> 
+    	<color rgba="1.0 1.0 1.0 0.2"/> 
+    </material>
+
+    <link name="base">
+        <visual>
+            <origin xyz="0 0 0" rpy="1.57 0 3.14" />
+            <geometry>
+                <mesh filename="../meshes/base_link.obj" />
+                <!-- <cylinder length="0.5" radius="0.04"/> -->
+            </geometry>
+            <material name="Diamond"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 1.57 0" />
+            <geometry>
+                <!-- <mesh filename="../meshes/base_link.obj" /> -->
+                <cylinder length="0.5" radius="0.04"/>
+            </geometry>
+        </collision>
+    </link>
+
+
+    <joint name="base_to_base_inertia" type="fixed">
+        <parent link="base"/>
+        <child link="base_inertia"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+    </joint>
+
+
+    <link name="base_inertia">
+        <inertial>
+            <origin xyz="0.0030652 0.0043949 0.015248" rpy="0 0 0" />
+            <mass value="30.0" />
+            <inertia ixx="0.15234" ixy="0.00092094" ixz="-0.0095582" iyy="0.68188" iyz="0.00091552" izz="0.64094" />
+        </inertial>
+    </link>
+
+
+    <link name="imu_link">
+        <inertial>
+            <mass value="0.001"/>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.000001" iyz="0" izz="0.0001"/>
+        </inertial>
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size="0.001 0.001 0.001"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size=".001 .001 .001"/>
+            </geometry>
+        </collision>
+    </link>
+
+
+    <joint name="imu_joint" type="fixed">
+        <axis xyz="0 0 0"/> 
+        <origin xyz="0 0 0"/>
+        <parent link="base"/>
+        <child link="imu_link"/>
+    </joint>
+
+    <link name="lidar_link">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size="0.01 0.01 0.01"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size=".01 .01 .01"/>
+            </geometry>
+        </collision>
+    </link>
+
+
+    <joint name="lidar_joint" type="fixed">
+        <axis xyz="0 0 0"/> 
+        <origin xyz="0.2 0 0.5"/>
+        <parent link="base"/>
+        <child link="lidar_link"/>
+    </joint>
+
+
+
+    <link name="LF_HIP">
+        <inertial>
+            <origin xyz="-0.002759 -0.038003 -0.0020471" rpy="0 0 0" />
+            <mass value="3.0" />
+            <inertia ixx="0.00084975" ixy="2.5128E-05" ixz="-3.1095E-05" iyy="0.0016235" iyz="1.9684E-05" izz="0.0012084" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy=" 1.5707963268 0 3.1415926" />
+            <geometry>
+                <mesh filename="../meshes/FL_HipX.obj" />
+                <!-- <cylinder length="0.136" radius="0.008"/> -->
+            </geometry>
+            <material name="Pearl"/>
+        </visual>
+    </link>
+
+
+    <joint name="LF_HAA" type="revolute">
+        <origin xyz="0.317 0.136 0" rpy="0 0 0" />
+        <parent link="base" />
+        <child link="LF_HIP" />
+        <axis xyz="1 0 0" />
+        <limit lower="-0.39" upper="0.39" effort="38.6" velocity="13.6" />
+    </joint>
+
+
+    <link name="LF_THIGH">
+        <inertial>
+            <origin xyz="-0.0024066 0.026983 -0.047138" rpy="0 0 0" />
+            <mass value="6.0" />
+            <inertia ixx="0.0091835" ixy="-5.5596E-05" ixz="-0.00026799" iyy="0.0095232" iyz="-0.0011185" izz="0.0023439" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="1.5707963268 0 3.1415926" />
+            <geometry>
+                <mesh filename="../meshes/FL_HipY.obj" />                
+                <!-- <cylinder length="0.25" radius="0.015"/> -->
+            </geometry>
+            <material name="Canutillos"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 -0.125" rpy="0 0 0" />
+            <geometry>
+                <!-- <mesh filename="../meshes/FL_HipY.obj" /> -->                
+                <cylinder length="0.25" radius="0.015"/>
+            </geometry>
+        </collision>
+    </link>
+
+
+    <joint name="LF_HFE" type="revolute">
+        <origin xyz="0.0005 0.037 0" rpy="0 0 0" />
+        <parent link="LF_HIP" />
+        <child link="LF_THIGH" />
+        <axis xyz="0 1 0" />
+        <limit lower="-2.27" upper="2.27" effort="52.1" velocity="13.4" />
+    </joint>
+
+
+    <link name="LF_SHANK">
+        <inertial>
+            <origin xyz="-0.0045936 4.5131E-05 -0.14462" rpy="0 0 0" />
+            <mass value="1.0" />
+            <inertia ixx="0.0048214" ixy="-9.1437E-08" ixz="8.5221E-05" iyy="0.0048402" iyz="1.3168E-06" izz="5.8603E-05" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="1.5707963268 0 3.1415926" />
+            <geometry>
+                <mesh filename="../meshes/FL_Knee.obj" />             
+                <!-- <cylinder length="0.3" radius="0.01"/> -->
+            </geometry>
+            <material name="Lasurite"/>
+        </visual>
+<!--         <collision>
+            <origin xyz="0 0 -0.15" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="../meshes/FL_Knee.obj" />             
+                <cylinder length="0.3" radius="0.01"/>
+            </geometry>
+        </collision> -->
+    </link>
+
+
+    <joint name="LF_KFE" type="revolute">
+        <origin xyz="0 0 -0.3" rpy="0 0 0" />
+        <parent link="LF_THIGH" />
+        <child link="LF_SHANK" />
+        <axis xyz="0 1 0" />
+        <limit lower="-1.73" upper="-0.66" effort="52.1" velocity="13.4" />
+    </joint>
+
+
+    <joint name="LF_ANKLE" type="fixed">
+        <parent link="LF_SHANK"/>
+        <child link="LF_FOOT"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.32125"/>
+    </joint>
+
+
+    <link name="LF_FOOT">
+        <collision>
+            <origin xyz="0 0 0.02325"/>
+            <geometry>
+                <sphere radius="0.035"/>
+            </geometry>
+        </collision>
+    </link>
+
+
+    <link name="RF_HIP">
+        <inertial>
+            <origin xyz="-0.0028162 0.038003 -0.002047" rpy="0 0 0" />
+            <mass value="3.0" />
+            <inertia ixx="0.00084975" ixy="-2.428E-05" ixz="-3.1139E-05" iyy="0.0016234" iyz="-1.9684E-05" izz="0.0012083" />
+        </inertial>
+        <visual>           
+            <origin xyz="0 0 0" rpy="1.5707963268 0 3.1415926" />
+            <geometry>
+                <mesh filename="../meshes/FR_HipX.obj" />             
+                <!-- <cylinder length="0.136" radius="0.008"/> -->
+            </geometry>
+            <material name="Pearl"/>
+        </visual>
+    </link>
+
+
+    <joint name="RF_HAA" type="revolute">
+        <origin xyz="0.317 -0.136 0" rpy="0 0 0" />
+        <parent link="base" />
+        <child link="RF_HIP" />
+        <axis xyz="1 0 0" />
+        <limit lower="-0.39" upper="0.39" effort="38.6" velocity="13.6" />
+    </joint>
+
+
+    <link name="RF_THIGH">
+        <inertial>
+            <origin xyz="-0.0024606 -0.026992 -0.04713" rpy="0 0 0" />
+            <mass value="6.0" />
+            <inertia ixx="0.0091855" ixy="5.5548E-05" ixz="-0.00027265" iyy="0.0095244" iyz="0.0011191" izz="0.0023439" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="1.5707963268 0 3.1415926" />
+            <geometry>
+                <mesh filename="../meshes/FR_HipY.obj" />                
+                <!-- <cylinder length="0.25" radius="0.015"/> -->
+            </geometry>
+            <material name="Canutillos"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 -0.125" rpy="0 0 0" />
+            <geometry>
+                <!-- <mesh filename="../meshes/FR_HipY.obj" /> -->                
+                <cylinder length="0.25" radius="0.015"/>
+            </geometry>
+        </collision>
+    </link>
+
+
+    <joint name="RF_HFE" type="revolute">
+        <origin xyz="0.0005 -0.037 0" rpy="0 0 0" />
+        <parent link="RF_HIP" />
+        <child link="RF_THIGH" />
+        <axis xyz="0 1 0" />
+        <limit lower="-2.27" upper="2.27" effort="52.1" velocity="13.4" />
+    </joint>
+
+
+    <link name="RF_SHANK">
+        <inertial>
+            <origin xyz="-0.004523 4.5131E-05 -0.14462" rpy="0 0 0" />
+            <mass value="1.0" />
+            <inertia ixx="0.0048214" ixy="-9.208E-08" ixz="8.7546E-05" iyy="0.0048402" iyz="1.3168E-06" izz="5.8687E-05" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="1.5707963268 0 3.1415926" />
+            <geometry>
+                <mesh filename="../meshes/FR_Knee.obj" /> 
+                <!-- <cylinder length="0.3" radius="0.01"/> -->
+            </geometry>
+            <material name="Lasurite"/>
+        </visual>
+<!--         <collision>
+            <origin xyz="0 0 -0.15" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="../meshes/FR_Knee.obj" /> 
+                <cylinder length="0.3" radius="0.01"/>
+            </geometry>
+        </collision> -->
+    </link>
+
+
+    <joint name="RF_KFE" type="revolute">
+        <origin xyz="-0.00014645 0 -0.3" rpy="0 0 0" />
+        <parent link="RF_THIGH" />
+        <child link="RF_SHANK" />
+        <axis xyz="0 1 0" />
+        <limit lower="-1.73" upper="-0.66" effort="52.1" velocity="13.4" />
+    </joint>
+
+
+    <joint name="RF_ANKLE" type="fixed">
+        <parent link="RF_SHANK"/>
+        <child link="RF_FOOT"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.32125"/>
+    </joint>
+
+
+    <link name="RF_FOOT">
+        <collision>
+            <origin xyz="0 0 0.02325"/>
+            <geometry>
+                <sphere radius="0.035"/>
+            </geometry>
+        </collision>
+    </link>
+
+
+    <link name="LH_HIP">
+        <inertial>
+            <origin xyz="0.0033162 -0.038003 -0.0020471" rpy="0 0 0" />
+            <mass value="3.0" />
+            <inertia ixx="0.00084975" ixy="-2.428E-05" ixz="3.1139E-05" iyy="0.0016234" iyz="1.9684E-05" izz="0.0012083" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="1.5707963268 0 3.1415926" />
+            <geometry>
+                <mesh filename="../meshes/HL_HipX.obj" />
+                <!-- <cylinder length="0.136" radius="0.008"/> -->
+            </geometry>
+            <material name="Pearl"/>
+        </visual>
+    </link>
+
+
+    <joint name="LH_HAA" type="revolute">
+        <origin xyz="-0.317 0.136 0" rpy="0 0 0" />
+        <parent link="base" />
+        <child link="LH_HIP" />
+        <axis xyz="1 0 0" />
+        <limit lower="-0.39" upper="0.39" effort="38.6" velocity="13.6" />
+    </joint>
+
+
+    <link name="LH_THIGH">
+        <inertial>
+            <origin xyz="-0.0024066 0.026983 -0.047138" rpy="0 0 0" />
+            <mass value="6.0" />
+            <inertia ixx="0.0091835" ixy="-5.5596E-05" ixz="-0.00026799" iyy="0.0095232" iyz="-0.0011185" izz="0.0023439" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="1.5707963268 0 3.1415926" />
+            <geometry>
+                <mesh filename="../meshes/HL_HipY.obj" />             
+                <!-- <cylinder length="0.25" radius="0.015"/> -->
+            </geometry>
+            <material name="Canutillos"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 -0.125" rpy="0 0 0" />
+            <geometry>
+                <!-- <mesh filename="../meshes/HL_HipY.obj" /> -->             
+                <cylinder length="0.25" radius="0.015"/>
+            </geometry>
+        </collision>
+    </link>
+
+
+    <joint name="LH_HFE" type="revolute">
+        <origin xyz="0 0.037 0" rpy="0 0 0" />
+        <parent link="LH_HIP" />
+        <child link="LH_THIGH" />
+        <axis xyz="0 -1 0" />
+        <limit lower="-2.27" upper="2.27" effort="52.1" velocity="13.4" />
+    </joint>
+
+
+    <link name="LH_SHANK">
+        <inertial>
+            <origin xyz="-0.0045936 0.0020451 -0.14462" rpy="0 0 0" />
+            <mass value="1.0" />
+            <inertia ixx="0.0048214" ixy="-9.1438E-08" ixz="8.5221E-05" iyy="0.0048402" iyz="1.3168E-06" izz="5.8603E-05" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="1.5707963268 0 3.1415926" />
+            <geometry>
+                <mesh filename="../meshes/HL_Knee.obj" />
+                <!-- <cylinder length="0.3" radius="0.01"/> -->
+            </geometry>
+            <material name="Lasurite"/>
+        </visual>
+<!--         <collision>
+            <origin xyz="0 0 -0.15" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="../meshes/HL_Knee.obj" />
+                <cylinder length="0.3" radius="0.01"/>
+            </geometry>
+        </collision> -->
+    </link>
+
+
+    <joint name="LH_KFE" type="revolute">
+        <origin xyz="0 0 -0.3" rpy="0 0 0" />
+        <parent link="LH_THIGH" />
+        <child link="LH_SHANK" />
+        <axis xyz="0 1 0" />
+        <limit lower="-1.570796" upper="0.66" effort="52.1" velocity="13.4" />
+    </joint>
+
+
+    <joint name="LH_ANKLE" type="fixed">
+        <parent link="LH_SHANK"/>
+        <child link="LH_FOOT"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.32125"/>
+    </joint>
+
+
+    <link name="LH_FOOT">
+        <collision>
+            <origin xyz="0 0 0.02325"/>
+            <geometry>
+                <sphere radius="0.035"/>
+            </geometry>
+        </collision>
+    </link>
+
+
+    <link name="RH_HIP">
+        <inertial>
+            <origin xyz="0.002759 0.038003 -0.002047" rpy="0 0 0" />
+            <mass value="3.0" />
+            <inertia ixx="0.00084975" ixy="2.5128E-05" ixz="3.1095E-05" iyy="0.0016235" iyz="-1.9684E-05" izz="0.0012084" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="1.5707963268 0 3.1415926" />
+            <geometry>
+                <mesh filename="../meshes/HR_HipX.obj" />
+                <!-- <cylinder length="0.136" radius="0.008"/> -->
+            </geometry>
+            <material name="Pearl"/>
+        </visual>
+    </link>
+
+
+    <joint name="RH_HAA" type="revolute">
+        <origin xyz="-0.317 -0.136 0" rpy="0 0 0" />
+        <parent link="base" />
+        <child link="RH_HIP" />
+        <axis xyz="1 0 0" />
+        <limit lower="-0.39" upper="0.39" effort="38.6" velocity="13.6" />
+    </joint>
+
+
+    <link name="RH_THIGH">
+        <inertial>
+            <origin xyz="-0.0024376 -0.026992 -0.047131" rpy="0 0 0" />
+            <mass value="6.0" />
+            <inertia ixx="0.0091857" ixy="5.5001E-05" ixz="-0.00026931" iyy="0.0095244" iyz="0.0011192" izz="0.0023436" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="1.5707963268 0 3.1415926" />
+            <geometry>
+                <mesh filename="../meshes/HR_HipY.obj" />             
+                <!-- <cylinder length="0.25" radius="0.015"/> -->
+            </geometry>
+            <material name="Canutillos"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 -0.125" rpy="0 0 0" />
+            <geometry>
+            	<!-- <mesh filename="../meshes/HR_HipY.obj" /> -->             
+                <cylinder length="0.25" radius="0.015"/>
+            </geometry>
+        </collision>
+    </link>
+
+
+    <joint name="RH_HFE" type="revolute">
+        <origin xyz="-0.0005 -0.037 0" rpy="0 0 0" />
+        <parent link="RH_HIP" />
+        <child link="RH_THIGH" />
+        <axis xyz="0 -1 0" />
+        <limit lower="-2.27" upper="2.27" effort="52.1" velocity="13.4" />
+    </joint>
+
+
+    <link name="RH_SHANK">
+        <inertial>
+            <origin xyz="-0.0043525 4.5131E-05 -0.14462" rpy="0 0 0" />
+            <mass value="1.0" />
+            <inertia ixx="0.0048212" ixy="-9.3632E-08" ixz="9.3158E-05" iyy="0.0048402" iyz="1.3167E-06" izz="5.89E-05" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="1.5707963268 0 3.1415926" />
+            <geometry>
+                <mesh filename="../meshes/HR_Knee.obj" />
+                <!-- <cylinder length="0.3" radius="0.01"/> -->
+            </geometry>
+            <material name="Lasurite"/>
+        </visual>
+<!--         <collision>
+            <origin xyz="0 0 -0.15" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="../meshes/HR_Knee.obj" />
+                <cylinder length="0.3" radius="0.01"/>
+            </geometry>
+        </collision> -->
+    </link>
+
+
+    <joint name="RH_KFE" type="revolute">
+        <origin xyz="0 0 -0.3" rpy="0 0 0" />
+        <parent link="RH_THIGH" />
+        <child link="RH_SHANK" />
+        <axis xyz="0 1 0" />
+        <limit lower="-1.570796" upper="0.66" effort="52.1" velocity="13.4" />
+    </joint>
+
+    <joint name="RH_ANKLE" type="fixed">
+        <parent link="RH_SHANK"/>
+        <child link="RH_FOOT"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.32125"/>
+    </joint>
+
+    <link name="RH_FOOT">
+        <collision>
+            <origin xyz="0 0 0.02325"/>
+            <geometry>
+                <sphere radius="0.035"/>
+            </geometry>
+        </collision>
+    </link>
+
+
+</robot>
