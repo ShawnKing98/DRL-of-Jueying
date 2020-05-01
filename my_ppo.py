@@ -171,6 +171,7 @@ def ppo(env_fn, actor_critic=core.mlp_actor_critic, ac_kwargs=dict(), seed=0,
     np.random.seed(seed)
 
     env = env_fn("DIRECT")
+    # env = env_fn("GUI")
     obs_dim = env.observation_space.shape
     act_dim = env.action_space.shape
 
@@ -249,17 +250,15 @@ def ppo(env_fn, actor_critic=core.mlp_actor_critic, ac_kwargs=dict(), seed=0,
 
     start_time = time.time()
     o, r, d, ep_ret, ep_len = env.reset(), 0, False, 0, 0
-    o, o_dict = env._getObservation()
     # Main loop: collect experience in env and update/log each epoch
     for epoch in range(epochs):
         for t in range(local_steps_per_epoch):
-            x_dict = XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
             a, v_t, logp_t = sess.run(get_action_ops, feed_dict={x_ph: o.reshape(1, -1)})   # CHANGE THE feed_dict HERE!
             if on_policy:
-                o2, r, d, _ = env.step(a[0])
+                o2, r, d, o2_dict = env.step(a[0])
             else:
                 a_target = get_action_from_target_policy(env.t)
-                o2, r, d, _ = env.step(a_target)
+                o2, r, d, o2_dict = env.step(a_target)
             ep_ret += r
             ep_len += 1
 
@@ -305,7 +304,7 @@ def ppo(env_fn, actor_critic=core.mlp_actor_critic, ac_kwargs=dict(), seed=0,
         logger.log_tabular('ClipFrac', average_only=True)
         logger.log_tabular('StopIter', average_only=True)
         logger.log_tabular('Time', time.time() - start_time)
-        logger.dump_tabular()
+        logger.dump_tabular()   # show the log
 
     env.close()
 

@@ -41,6 +41,7 @@ def load_policy_and_env(fpath, itr='last', deterministic=False):
         state = joblib.load(osp.join(fpath, 'vars' + itr + '.pkl'))
         env = state['env']
         print("Oh yes, load environment succeed")
+        print(env)
     except:
         print("Oh no, load environment failed")
         env = None
@@ -106,7 +107,7 @@ def run_policy(env, get_action, max_ep_len=None, num_episodes=100, render=True):
 
 
 if __name__ == '__main__':
-    fpath = '/home/shawn/Documents/DRL/experiments/Fri Apr 24 04:04:38 2020'
+    fpath = '/home/shawn/Documents/DRL/experiments/Fri May  1 19:13:21 2020'
     itr = 'last'
     deterministic = False
     epi_len = None

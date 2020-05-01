@@ -5,7 +5,7 @@ import pybullet as p
 from os import path as osp
 import numpy as np
 from enum import IntEnum, unique
-from my_utilities import logisticKernal
+from my_utilities import logisticKernal, time_interp
 
 
 @unique
@@ -24,12 +24,12 @@ class Joints(IntEnum):
     RH_KFE = 17
 
 SIMULATIONFREQUENCY = 500
-PGAIN_ORIGIN = 65
-DGAIN_ORIGIN = 0.3
+PGAIN_ORIGIN = 4 * [200, 200, 300]
+DGAIN_ORIGIN = 4 * [2, 2, 3]
 PGAIN_NOISE = 0
 DGAIN_NOISE = 0
 DAMPING = 2.0
-MAXTORQUE = 25.0
+MAXTORQUE = 30.0
 
 DEFAULT_JOINT_POSITIONS = [0.1, 0.7, -1.2,
                            -0.1, 0.7, -1.2,
@@ -56,7 +56,7 @@ EAGLE_JOINT_POSITIONS = [0.0, -1.6, 0.0,
 
 
 class Anymal(gym.Env):
-    def __init__(self, connection="GUI"):
+    def __init__(self, connection="GUI", prev_epoch=0):
         if connection == "GUI":
             self.pybullet = p.connect(p.GUI)
         else:
@@ -80,11 +80,14 @@ class Anymal(gym.Env):
 
         self.actionTime = 3.0
         self.t = 0.0
-        self.epoch = 0  # The number of DRL epochs that have been done
+        self.epoch = prev_epoch  # The number of DRL epochs that have been done
 
         maxPosition = np.pi * np.ones(12)
         maxVelocity = 2 * np.ones(12)
+        maxPositionHistory = np.pi * np.ones(24)
+        maxVelocityHistory = 2 * np.ones(24)
         maxBasePositionAndOrientation = np.ones(7)
+        maxBasePosition = np.ones(3)
         maxBaseOrientationVector = np.ones(3)
         maxBaseVelocity = 1 * np.ones(3)
         maxBaseAngularVelocity = 2 * np.pi * np.ones(3)
@@ -98,13 +101,29 @@ class Anymal(gym.Env):
             maxBaseAngularVelocity,
             maxAcceleration
         ])
+        stateUpperBound = np.concatenate([
+            maxBaseOrientationVector,
+            maxBaseVelocity,
+            maxBaseAngularVelocity,
+            maxPosition,
+            maxVelocity,
+            maxPositionHistory,
+            maxVelocityHistory,
+            maxPosition
+        ])
+        # self.observation_space = spaces.Box(
+        #     low=-observationUpperBound,
+        #     high=observationUpperBound
+        # )
         self.observation_space = spaces.Box(
-            low=-observationUpperBound,
-            high=observationUpperBound
+            low=-stateUpperBound,
+            high=stateUpperBound
         )
-        self.history_buffer = dict()
+
+        self.history_buffer = dict()    # used to storage the joint state history and the last action
         self.history_buffer['last_action'] = np.nan * np.ones(12)
         self.history_buffer['joint_state'] = {'time': [], 'position': [], 'velocity': []}
+        self.buffer_time_length = 0.03
 
         p.setJointMotorControlArray(
             self.anymal,
@@ -131,12 +150,13 @@ class Anymal(gym.Env):
             self.step(FALL_JOINT_POSITIONS)
             # time.sleep(10.0 / SIMULATIONFREQUENCY)  # To observe
         observation, observation_dict = self._getObservation()
+        state = self.getState()
         self.t = 0.0
         self.history_buffer['last_action'] = observation_dict['position']
         self.history_buffer['joint_state']['time'] = [0.0]
         self.history_buffer['joint_state']['position'] = [observation_dict['position']]
         self.history_buffer['joint_state']['velocity'] = [observation_dict['velocity']]
-        return observation
+        return state
 
     def step(self, action, addNoise=False):
         _, measurement = self._getObservation()
@@ -170,6 +190,8 @@ class Anymal(gym.Env):
 
         observation, observationAsDict = self._getObservation()
 
+        state = self.getState()
+
         reward = -self.calculateCost(PD_torque=PD_torque)
 
         self.t += 1.0 / SIMULATIONFREQUENCY
@@ -177,12 +199,18 @@ class Anymal(gym.Env):
         self.history_buffer['joint_state']['time'].append(self.t)
         self.history_buffer['joint_state']['position'].append(observationAsDict['position'])
         self.history_buffer['joint_state']['velocity'].append(observationAsDict['velocity'])
+        while self.history_buffer['joint_state']['time'][-1] - self.history_buffer['joint_state']['time'][0] > self.buffer_time_length:
+            self.history_buffer['joint_state']['time'] = self.history_buffer['joint_state']['time'][1:]
+            self.history_buffer['joint_state']['position'] = self.history_buffer['joint_state']['position'][1:]
+            self.history_buffer['joint_state']['velocity'] = self.history_buffer['joint_state']['velocity'][1:]
 
-        if (self.t > self.actionTime) and np.linalg.norm(observationAsDict['baseAngularVelocity']) < 5e-4:
+        # if (self.t > self.actionTime) and np.linalg.norm(observationAsDict['baseAngularVelocity']) < 5e-4:
+        # if observationAsDict['baseOrientationVector'].dot([0,0,-1]) > np.cos(0.125*np.pi) and np.linalg.norm(observationAsDict['baseAngularVelocity']) < 5e-4:
+        if observationAsDict['baseOrientationVector'].dot([0, 0, -1]) > np.cos(0.125 * np.pi):
             done = True
         else:
             done = False
-        return observation, reward, done, observationAsDict
+        return state, reward, done, observationAsDict
 
     def render(self, mode="rgb"):
         # print("rendering now")
@@ -289,12 +317,40 @@ class Anymal(gym.Env):
     def setEpoch(self, epoch):
         self.epoch = epoch
 
+    def addEpoch(self):
+        self.epoch = self.epoch + 1
+
+    def getState(self):
+        o_dict = self._getObservation()[1]
+        base_orientation = o_dict['baseOrientationVector']
+        base_v = o_dict['baseVelocity']
+        base_w = o_dict['baseAngularVelocity']
+        joint_position = o_dict['position']
+        joint_velocity = o_dict['velocity']
+        joint_position_history_1 = time_interp(self.t - 0.01,
+                                             self.history_buffer['joint_state']['time'],
+                                             np.array(self.history_buffer['joint_state']['position']))
+        joint_position_history_2 = time_interp(self.t - 0.02,
+                                               self.history_buffer['joint_state']['time'],
+                                               np.array(self.history_buffer['joint_state']['position']))
+        joint_position_history = np.append(joint_position_history_1, joint_position_history_2)
+        joint_velocity_history_1 = time_interp(self.t - 0.01,
+                                             self.history_buffer['joint_state']['time'],
+                                             np.array(self.history_buffer['joint_state']['velocity']))
+        joint_velocity_history_2 = time_interp(self.t - 0.02,
+                                               self.history_buffer['joint_state']['time'],
+                                               np.array(self.history_buffer['joint_state']['velocity']))
+        joint_velocity_history = np.append(joint_velocity_history_1, joint_velocity_history_2)
+        last_a = self.history_buffer['last_action']
+
+        return np.concatenate([base_orientation, base_v, base_w, joint_position, joint_velocity, joint_position_history, joint_velocity_history, last_a])
+
 
 if __name__ == "__main__":
     env = Anymal("GUI")
     # input("Press any key to reset.\n")
     env.reset()
-    while 1:
+    for i in range(500):
         env.step(np.zeros(12))
         print(env.t)
     input("Press any key to quit.\n")

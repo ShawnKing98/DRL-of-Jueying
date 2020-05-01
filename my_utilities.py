@@ -1,6 +1,9 @@
 import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
+from gym.spaces import Box, Discrete
+from tensorflow.python.ops import init_ops
+
 
 
 EPS = 1e-8
@@ -26,7 +29,7 @@ def gaussian_likelihood(x, mu, log_std):
     return likelihoods
 
 
-def mlp(x, hidden_sizes=(32,), activation=tf.tanh, output_activation=None):
+def my_mlp(x, hidden_sizes=(32,), activation=tf.tanh, output_activation=None, weight_list=None, bias_list=None):
     """
     Builds a multi-layer perceptron in Tensorflow.
 
@@ -40,17 +43,40 @@ def mlp(x, hidden_sizes=(32,), activation=tf.tanh, output_activation=None):
 
         output_activation: Activation function for last layer.
 
+        weight_list: The list of initial weight matrix of mlp
+
+        bias_list: The list of initial bias vector of mlp
+
     Returns:
         A TF symbol for the output of an MLP that takes x as an input.
 
     """
-    for layer in hidden_sizes[0:-1]:
-        x = tf.layers.dense(inputs=x, units=layer, activation=activation)
-    y = tf.layers.dense(inputs=x, units=hidden_sizes[-1], activation=output_activation)
+    for i in range(len(hidden_sizes[0:-1])):
+        layer = hidden_sizes[i]
+        if weight_list is None:
+            weight = None
+        else:
+            weight = tf.constant_initializer(weight_list[i])
+        if bias_list is None:
+            bias = init_ops.zeros_initializer()
+        else:
+            bias = tf.constant_initializer(bias_list[i])
+        x = tf.layers.dense(inputs=x, units=layer, activation=activation, kernel_initializer=weight, bias_initializer=bias)
+
+    if weight_list is None:
+        weight = None
+    else:
+        weight = tf.constant_initializer(weight_list[-1])
+    if bias_list is None:
+        bias = init_ops.zeros_initializer()
+    else:
+        bias = tf.constant_initializer(bias_list[-1])
+    y = tf.layers.dense(inputs=x, units=hidden_sizes[-1], activation=output_activation, kernel_initializer=weight, bias_initializer=bias)
+
     return y
 
 
-def mlp_gaussian_policy(x, a, hidden_sizes, activation, output_activation, action_space):
+def my_mlp_gaussian_policy(x, a, hidden_sizes, activation, output_activation, action_space, weight_list=None, bias_list=None, log_std=None):
     """
     Builds symbols to sample actions and compute log-probs of actions.
 
@@ -83,12 +109,35 @@ def mlp_gaussian_policy(x, a, hidden_sizes, activation, output_activation, actio
 
     """
     act_dim = a.shape.as_list()[1]
-    mu = mlp(x, list(hidden_sizes)+[act_dim], activation, output_activation)
-    log_std = -0.5 * tf.ones(shape=a.shape[1])
+    mu = my_mlp(x, list(hidden_sizes)+[act_dim], activation, output_activation, weight_list=weight_list, bias_list=bias_list)
+    if log_std is None:
+        log_std = tf.get_variable(name='log_std', initializer=-0.5*np.ones(act_dim, dtype=np.float32))
+    else:
+        log_std = tf.get_variable(name='log_std', initializer=tf.constant(log_std))
     pi = tf.random_normal(shape=tf.shape(mu), mean=mu, stddev=tf.exp(log_std))
     logp = gaussian_likelihood(a, mu, log_std)
     logp_pi = gaussian_likelihood(pi, mu, log_std)
     return pi, logp, logp_pi
+
+
+def my_mlp_actor_critic(x, a, hidden_sizes=(64, 64), activation=tf.tanh,
+                        output_activation=None, policy=None, action_space=None,
+                        pi_weight_list=None, pi_bias_list=None, log_std=None,
+                        v_weight_list=None, v_bias_list=None,):
+
+    # default policy builder depends on action space
+    if policy is None and isinstance(action_space, Box):
+        policy = my_mlp_gaussian_policy
+    elif policy is None and isinstance(action_space, Discrete):
+        raise Exception("Oops, the actor-critic of discrete env has not been developed!~")
+    #     policy = mlp_categorical_policy
+
+    with tf.variable_scope('pi'):
+        pi, logp, logp_pi = policy(x, a, hidden_sizes, activation, output_activation, action_space, pi_weight_list, pi_bias_list, log_std)
+    with tf.variable_scope('v'):
+        v = tf.squeeze(my_mlp(x, list(hidden_sizes) + [1], activation, None, v_weight_list, v_bias_list), axis=1)
+
+    return pi, logp, logp_pi, v
 
 
 def logisticKernal(x):
@@ -119,7 +168,7 @@ def read_target_trajectory(fpath):
     trajectory = np.array(xbest)
     global timePoint, tmpTrajectory
     timePoint = np.append(0, timeLine)
-    tmpTrajectory = trajectory.reshape(len(timeLine), 12).T
+    tmpTrajectory = np.append(FALL_JOINT_POSITIONS, trajectory).reshape(-1, 12)
     xrecentbest.close()
 
     return
@@ -127,9 +176,24 @@ def read_target_trajectory(fpath):
 
 def get_action_from_target_policy(t):
     # use this to get the action from a CMAES data file. t represents the time in simulated world(float type).
-    jointTarget = [np.interp(t, timePoint, np.append(FALL_JOINT_POSITIONS[i], tmpTrajectory[i])) for i in range(12)]
+    # print(timePoint)
+    # print(tmpTrajectory)
+    jointTarget = time_interp(t, timePoint, tmpTrajectory)
 
     return jointTarget
+
+
+def time_interp(t, time, data):
+
+    '''
+    use this to implement the interp during a time window. len(time) == column(data)
+    data must be numpy array
+    '''
+
+    assert len(time) == data.shape[0], "Oops, the length of time must be equal to the columns of data!"
+    if len(time) == 0:
+        return None
+    return np.array([np.interp(t, time, data.T[i]) for i in range(data.shape[1])])
 
 
 def plot_curriculum_factor():

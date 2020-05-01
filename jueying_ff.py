@@ -189,12 +189,15 @@ class Anymal(gym.Env):
         acceleration = (velocity - lastVelocity) * SIMULATIONFREQUENCY
         lastVelocity = velocity
         basePosition, baseOrientation = p.getBasePositionAndOrientation(self.anymal)
+        baseOrientation_Matrix = np.array(p.getMatrixFromQuaternion(baseOrientation)).reshape(3, 3)
+        baseOrientationVector = np.matmul(baseOrientation_Matrix, [0, 0, -1])
         baseVelocity, baseAngularVelocity = p.getBaseVelocity(self.anymal)
         observationAsArray = np.concatenate([
             position,
             velocity,
             basePosition,
             baseOrientation,
+            baseOrientationVector,
             baseVelocity,
             baseAngularVelocity,
             acceleration
@@ -204,6 +207,7 @@ class Anymal(gym.Env):
             "velocity": velocity,
             "basePosition": basePosition,
             "baseOrientation": baseOrientation,
+            "baseOrientationVector": baseOrientationVector,
             "baseVelocity": baseVelocity,
             "baseAngularVelocity": baseAngularVelocity,
             "acceleration": acceleration
@@ -393,7 +397,8 @@ if __name__ == "__main__":
             # action = HandTuningTrajectory(env.t)
             action = jointTargetsAsFunctionOfTime(env.t)
             observation, reward, done, measurement = env.step(action, addNoise=False)
-
+            if reward > 0:
+                print(measurement["baseOrientationVector"].dot([0, 0, -1]))
             # Observe
             # Trajectory following
             trajectoryTargetList.append(action)
