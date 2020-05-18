@@ -5,6 +5,7 @@ import os.path as osp
 import tensorflow as tf
 from spinup import EpochLogger
 from spinup.utils.logx import restore_tf_graph
+from env_config import SIMULATIONFREQUENCY
 
 
 def load_policy_and_env(fpath, itr='last', deterministic=False):
@@ -91,7 +92,11 @@ def run_policy(env, get_action, max_ep_len=None, num_episodes=100, render=True):
             time.sleep(1e-3)
 
         a = get_action(o)
-        o, r, d, _ = env.step(a)
+        for i in range(25):
+            o, r, d, _ = env.step(a)
+            time.sleep(1/SIMULATIONFREQUENCY)
+        # if env.t >2:
+        #     input("hhh")
         ep_ret += r
         ep_len += 1
 
@@ -107,12 +112,12 @@ def run_policy(env, get_action, max_ep_len=None, num_episodes=100, render=True):
 
 
 if __name__ == '__main__':
-    fpath = '/home/shawn/Documents/DRL/experiments/Fri May  1 19:13:21 2020'
+    fpath = '/home/shawn/Documents/DRL/experiments/Fri May 15 22:59:55 2020'
     itr = 'last'
     deterministic = False
-    epi_len = None
-    # epi_len = 200
-    episodes = 5
+    # epi_len = None
+    epi_len = 60
+    episodes = 30
     render = True
     env, get_action = load_policy_and_env(fpath,
                                           itr,

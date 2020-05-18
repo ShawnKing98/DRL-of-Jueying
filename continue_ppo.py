@@ -88,7 +88,7 @@ class PPOBuffer:
 def ppo(env_fn, GUI=True, actor_critic=my_mlp_actor_critic, ac_kwargs=dict(), seed=0,
         steps_per_epoch=4000, epochs=50, gamma=0.99, clip_ratio=0.2, pi_lr=3e-4,
         vf_lr=1e-3, train_pi_iters=80, train_v_iters=80, lam=0.97, max_ep_len=1000,
-        target_kl=0.01, logger_kwargs=dict(), save_freq=10, on_policy=True, load_path=None, prev_epochs=0):
+        target_kl=0.01, logger_kwargs=dict(), save_freq=10, on_policy=True, prev_epochs=0):
     """
     Proximal Policy Optimization (by clipping),
 
@@ -189,7 +189,7 @@ def ppo(env_fn, GUI=True, actor_critic=my_mlp_actor_critic, ac_kwargs=dict(), se
     # Inputs to computation graph
     x_ph, a_ph = core.placeholders_from_spaces(env.observation_space, env.action_space)
     # Main outputs from computation graph
-    pi, logp, logp_pi, v = actor_critic(x_ph, a_ph, **ac_kwargs)
+    pi, logp, logp_pi, v, mu, log_std = actor_critic(x_ph, a_ph, **ac_kwargs)
 
     # if load_path==None:
     #     # Inputs to computation graph
@@ -207,8 +207,6 @@ def ppo(env_fn, GUI=True, actor_critic=my_mlp_actor_critic, ac_kwargs=dict(), se
 
     # Calculated through one epoch, assigned by buf's methods
     adv_ph, ret_ph, logp_old_ph = core.placeholders(None, None, None)
-
-
 
     # Need all placeholders in *this* order later (to zip with data from buffer)
     all_phs = [x_ph, a_ph, adv_ph, ret_ph, logp_old_ph]
@@ -253,6 +251,10 @@ def ppo(env_fn, GUI=True, actor_critic=my_mlp_actor_critic, ac_kwargs=dict(), se
     def update():
         inputs = {k: v for k, v in zip(all_phs, buf.get())}
         pi_l_old, v_l_old, ent = sess.run([pi_loss, v_loss, approx_ent], feed_dict=inputs)
+        # lllogp, mmmu, llog_std = sess.run([logp, mu, log_std], feed_dict=inputs)
+
+        # logp is basically the same as logp_old_ph, the error starts from 1e-6,
+        # and this error is a little strange...
 
         # Training
         for i in range(train_pi_iters):
@@ -276,13 +278,31 @@ def ppo(env_fn, GUI=True, actor_critic=my_mlp_actor_critic, ac_kwargs=dict(), se
     o, r, d, ep_ret, ep_len = env.reset(), 0, False, 0, 0
     # Main loop: collect experience in env and update/log each epoch
     for epoch in range(epochs):
+        last_noise_time = 0.0
+        noise = np.zeros(12)
         for t in range(local_steps_per_epoch):
             a, v_t, logp_t = sess.run(get_action_ops, feed_dict={x_ph: o.reshape(1, -1)})   # CHANGE THE feed_dict HERE!
-            if on_policy:
+            # aa = a.copy()
+            # if 2.0 < env.t < 4.0:
+            #     # on_policy = False
+            #     if env.t - last_noise_time > 0.1:
+            #         noise = np.random.uniform(-0.5 * np.pi, 0.5 * np.pi, 12)
+            #         last_noise_time += 0.1
+            #     a += noise
+            #     logp_t = sess.run(logp, feed_dict={x_ph: o.reshape(1, -1), a_ph: a})
+            # else:
+            #     # on_policy = True
+            #     pass
+            # print("time:", env.t, a-aa)
+
+            if not on_policy:
+                a = np.array([get_action_from_target_policy(env.t)])
+                logp_t = sess.run(logp, feed_dict={x_ph: o.reshape(1,-1), a_ph: a})
+
+            env.history_buffer['last_action'] = a[0]
+            for i in range(25):     # Change the frequency of control from 500Hz to 20Hz
                 o2, r, d, o2_dict = env.step(a[0])
-            else:
-                a_target = get_action_from_target_policy(env.t)
-                o2, r, d, o2_dict = env.step(a_target)
+
             ep_ret += r
             ep_len += 1
 
@@ -298,12 +318,27 @@ def ppo(env_fn, GUI=True, actor_critic=my_mlp_actor_critic, ac_kwargs=dict(), se
                 if not (terminal):
                     print('Warning: trajectory cut off by epoch at %d steps.' % ep_len)
                 # if trajectory didn't reach terminal state, bootstrap value target
-                last_val = 0 if d else sess.run(v, feed_dict={x_ph: o.reshape(1, -1)})
+                if d:
+                    last_val = 0
+                    # print(o2_dict['position'])
+                    # print(np.alltrue(o2_dict['position'][i] < -1 for i in [1, 4, 7, 10]) is True)
+                    # print(np.alltrue([o2_dict['position'][i] < -1 for i in [1, 4, 7, 10]]))
+                    # print("I did it!!!")
+                else:
+                    # last_val = sess.run(v, feed_dict={x_ph: o.reshape(1, -1)})
+                    last_val = 0
                 buf.finish_path(last_val)
+                print(ep_ret)
+
+                # logger.store(EpRet=ep_ret+last_val, EpLen=ep_len)
+                # if terminal:
+                #     o, ep_ret, ep_len = env.reset(), 0, 0
+
                 if terminal:
                     # only save EpRet / EpLen if trajectory finished
                     logger.store(EpRet=ep_ret, EpLen=ep_len)
                 o, ep_ret, ep_len = env.reset(), 0, 0
+                last_noise_time = 0.0
 
         # Save model
         if (epoch % save_freq == 0) or (epoch == epochs - 1):
@@ -329,6 +364,9 @@ def ppo(env_fn, GUI=True, actor_critic=my_mlp_actor_critic, ac_kwargs=dict(), se
         logger.log_tabular('StopIter', average_only=True)
         logger.log_tabular('Time', time.time() - start_time)
         logger.dump_tabular()   # show the log
+
+        if time.ctime()[-13:-11] == '09':
+            break
 
     env.close()
 

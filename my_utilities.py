@@ -12,9 +12,10 @@ FALL_JOINT_POSITIONS = [- 0.2, 0.7, -1.2,
                         - 0.2, 0.7, 1.2,
                         0.2, 0.7, 1.2]
 
+
 def gaussian_likelihood(x, mu, log_std):
     """
-    Calculate the likelihood of a specific x in a Gaussian distribution N(mu, std)
+    Calculate the log-likelihood of a specific x in a Gaussian distribution N(mu, std)
     Args:
         x: Tensor with shape [batch, dim]
         mu: Tensor with shape [batch, dim]
@@ -24,7 +25,7 @@ def gaussian_likelihood(x, mu, log_std):
         Tensor with shape [batch]
     """
     EPS = 1e-8
-    likelihoods = -0.5*(tf.reduce_sum(((x-mu)/tf.exp(log_std)+EPS)**2+2*log_std+np.log(2*np.pi), axis=1))
+    likelihoods = -0.5*(tf.reduce_sum(((x-mu)/(tf.exp(log_std)+EPS))**2+2*log_std+tf.log(2*np.pi), axis=1))
 
     return likelihoods
 
@@ -76,7 +77,7 @@ def my_mlp(x, hidden_sizes=(32,), activation=tf.tanh, output_activation=None, we
     return y
 
 
-def my_mlp_gaussian_policy(x, a, hidden_sizes, activation, output_activation, action_space, weight_list=None, bias_list=None, log_std=None):
+def my_mlp_gaussian_policy(x, a, hidden_sizes, activation, output_activation, action_space, weight_list=None, bias_list=None, log_std_list=None):
     """
     Builds symbols to sample actions and compute log-probs of actions.
 
@@ -110,19 +111,19 @@ def my_mlp_gaussian_policy(x, a, hidden_sizes, activation, output_activation, ac
     """
     act_dim = a.shape.as_list()[1]
     mu = my_mlp(x, list(hidden_sizes)+[act_dim], activation, output_activation, weight_list=weight_list, bias_list=bias_list)
-    if log_std is None:
-        log_std = tf.get_variable(name='log_std', initializer=-0.5*np.ones(act_dim, dtype=np.float32))
+    if log_std_list is None:
+        log_std = tf.get_variable(name='log_std', initializer=-0.5*np.ones(act_dim, dtype=np.float32), trainable=True)
     else:
-        log_std = tf.get_variable(name='log_std', initializer=tf.constant(log_std))
+        log_std = tf.get_variable(name='log_std', initializer=tf.constant(log_std_list), trainable=True)
     pi = tf.random_normal(shape=tf.shape(mu), mean=mu, stddev=tf.exp(log_std))
     logp = gaussian_likelihood(a, mu, log_std)
     logp_pi = gaussian_likelihood(pi, mu, log_std)
-    return pi, logp, logp_pi
+    return pi, logp, logp_pi, mu, log_std
 
 
 def my_mlp_actor_critic(x, a, hidden_sizes=(64, 64), activation=tf.tanh,
                         output_activation=None, policy=None, action_space=None,
-                        pi_weight_list=None, pi_bias_list=None, log_std=None,
+                        pi_weight_list=None, pi_bias_list=None, log_std_list=None,
                         v_weight_list=None, v_bias_list=None,):
 
     # default policy builder depends on action space
@@ -133,11 +134,11 @@ def my_mlp_actor_critic(x, a, hidden_sizes=(64, 64), activation=tf.tanh,
     #     policy = mlp_categorical_policy
 
     with tf.variable_scope('pi'):
-        pi, logp, logp_pi = policy(x, a, hidden_sizes, activation, output_activation, action_space, pi_weight_list, pi_bias_list, log_std)
+        pi, logp, logp_pi, mu, log_std = policy(x, a, hidden_sizes, activation, output_activation, action_space, pi_weight_list, pi_bias_list, log_std_list)
     with tf.variable_scope('v'):
         v = tf.squeeze(my_mlp(x, list(hidden_sizes) + [1], activation, None, v_weight_list, v_bias_list), axis=1)
 
-    return pi, logp, logp_pi, v
+    return pi, logp, logp_pi, v, mu, log_std
 
 
 def logisticKernal(x):

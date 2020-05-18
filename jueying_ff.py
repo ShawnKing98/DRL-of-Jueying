@@ -397,8 +397,8 @@ if __name__ == "__main__":
             # action = HandTuningTrajectory(env.t)
             action = jointTargetsAsFunctionOfTime(env.t)
             observation, reward, done, measurement = env.step(action, addNoise=False)
-            if reward > 0:
-                print(measurement["baseOrientationVector"].dot([0, 0, -1]))
+            # if reward > 0:
+            #     print(measurement["baseOrientationVector"].dot([0, 0, -1]))
             # Observe
             # Trajectory following
             trajectoryTargetList.append(action)
