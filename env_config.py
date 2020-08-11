@@ -64,7 +64,8 @@ EAGLE_JOINT_POSITIONS = [0.0, -1.6, 0.0,
 
 
 class Anymal(gym.Env):
-    def __init__(self, connection="GUI", prev_epoch=0):
+    def __init__(self, connection="GUI", prev_epoch=0, seed=None):
+        np.random.seed(seed)
         if connection == "GUI":
             self.pybullet = p.connect(p.GUI)
         else:
@@ -145,6 +146,7 @@ class Anymal(gym.Env):
         )
 
     def reset(self):
+        # keep randomly resetting the base until it's not upside-down
         while True:
             FALL_BASE_ORIENTATION_tmp = FALL_BASE_ORIENTATION + np.random.uniform(-0.5, 0.5, 4)
             # FALL_BASE_ORIENTATION_tmp = np.random.uniform(-1, 1, 4)
@@ -161,12 +163,15 @@ class Anymal(gym.Env):
         self.t = 0.0
         self.lastTime = 0.0
 
+        # randomly reset the joints
         jointNum = 0
         for joint in Joints:
             FALL_JOINT_POSITIONS_tmp = FALL_JOINT_POSITIONS + np.random.uniform(-0.7, 0.7, 12)
             positionTarget = FALL_JOINT_POSITIONS_tmp[jointNum]
             p.resetJointState(self.anymal, joint.value, positionTarget, 0.0)
             jointNum += 1
+
+        # run shortly to make the robot look more naturally
         for _ in range(600):
             p.stepSimulation()
             # self.step(FALL_JOINT_POSITIONS)
@@ -176,6 +181,7 @@ class Anymal(gym.Env):
         position = np.array([js[0] for js in jointStates])
         velocity = np.array([js[1] for js in jointStates])
 
+        # reset history buffer
         self.t = 0.0
         self.history_buffer['last_action'] = position
         self.history_buffer['joint_state']['time'] = [0.0]
@@ -215,7 +221,7 @@ class Anymal(gym.Env):
         p.stepSimulation()
 
         observation, observationAsDict = self._getObservation()
-
+        observationAsDict['torque'] = PD_torque + self.torqueNoise
         reward = -self.calculateCost(PD_torque=PD_torque)
 
         self.t += 1.0 / SIMULATIONFREQUENCY
@@ -234,13 +240,13 @@ class Anymal(gym.Env):
         # if (self.t > self.actionTime) and np.linalg.norm(observationAsDict['baseAngularVelocity']) < 5e-4:
         # if observationAsDict['baseOrientationVector'].dot([0,0,-1]) > np.cos(0.125*np.pi) and np.linalg.norm(observationAsDict['baseAngularVelocity']) < 5e-4:
 
-        # if observationAsDict['baseOrientationVector'].dot([0, 0, -1]) > np.cos(0.125 * np.pi)\
-        #         and np.alltrue([observationAsDict['position'][i] < -1 for i in [1, 4, 7, 10]])\
-        #         and self.t > 1.5:
-        #     done = True
-        # else:
-        #     done = False
-        done = False
+        if observationAsDict['baseOrientationVector'].dot([0, 0, -1]) > np.cos(0.125 * np.pi)\
+                and np.alltrue([observationAsDict['position'][i] < -1 for i in [1, 4, 7, 10]])\
+                and self.t > 1.5:
+            done = True
+        else:
+            done = False
+        # done = False
         return state, reward, done, observationAsDict
 
 

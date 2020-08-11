@@ -49,6 +49,7 @@ FALL_JOINT_POSITIONS = [- 0.2, 0.7, -1.2,
 FALL_BASE_ORIENTATION = np.array([1.6, 0.0, 0.0, 1.0])
 FALL_BASE_ORIENTATION /= np.linalg.norm(FALL_BASE_ORIENTATION)
 FALL_BASE_POSITION = [0.0, 0.0, 0.22]
+# FALL_BASE_POSITION = [0.0, 0.0, 1]
 
 REST_JOINT_POSITIONS = [-0.05, 1.45, -2.65,
                         0.05, 1.45, -2.65,
@@ -112,15 +113,20 @@ class Anymal(gym.Env):
         self.t = 0.0
 
     def reset(self):
+        # FALL_BASE_ORIENTATION_tmp = FALL_BASE_ORIENTATION + np.random.uniform(-0.5, 0.5, 4)
+        FALL_BASE_ORIENTATION_tmp = FALL_BASE_ORIENTATION + np.random.uniform(0, 0, 4)
+        # FALL_BASE_ORIENTATION_tmp = np.random.uniform(-1, 1, 4)
+        FALL_BASE_ORIENTATION_tmp /= np.linalg.norm(FALL_BASE_ORIENTATION_tmp)
         p.resetBasePositionAndOrientation(
             self.anymal,
             FALL_BASE_POSITION,
-            FALL_BASE_ORIENTATION
+            FALL_BASE_ORIENTATION_tmp
         )
 
         jointNum = 0
         for joint in Joints:
-            initPositionNoise = np.random.uniform(0, 0)
+            # initPositionNoise = np.random.uniform(-0.7, 0.7)
+            initPositionNoise = np.random.uniform(-0, 0)
             positionTarget = FALL_JOINT_POSITIONS[jointNum]
             # positionTarget = EAGLE_JOINT_POSITIONS[jointNum]
             p.resetJointState(self.anymal, joint.value, positionTarget+initPositionNoise, 0.0)
@@ -128,6 +134,8 @@ class Anymal(gym.Env):
         # for _ in range(100):
         #     self.step(FALL_JOINT_POSITIONS)
             # time.sleep(10.0 / SIMULATIONFREQUENCY)  # To observe
+        # for _ in range(600):
+        #     p.stepSimulation()
         observation, _ = self._getObservation()
         self.t = 0.0
         # input("hold")
@@ -165,7 +173,7 @@ class Anymal(gym.Env):
         p.stepSimulation()
 
         observation, observationAsDict = self._getObservation()
-
+        observationAsDict['torque'] = joint_torque
         reward = -self.calculateCost(PD_torque)
 
         self.t += 1.0 / SIMULATIONFREQUENCY
@@ -334,7 +342,7 @@ def HandTuningTrajectory(t):
     return jointTarget
 
 
-def jointTargetsAsFunctionOfTime(t):
+def jointTargetsAsFunctionOfTime(t, timeLine, trajectory):
 
     timePoint = np.append(0, timeLine)
     tmpTrajectory = trajectory.reshape(len(timeLine), 12).T
@@ -346,12 +354,13 @@ def jointTargetsAsFunctionOfTime(t):
 def logisticKernal(x):
     return -1/(np.exp(x)+2+np.exp(-x))
 
-def DrawFollowingPlot(timeList, trajectoryTargetList, trajectoryObserveList):
+def DrawFollowingPlot(timeList, trajectoryTargetList, trajectoryObserveList, legend1, legend2):
     for i in range(12):
         tmpTargetList = [target[i] for target in trajectoryTargetList]
         tmpObserveList = [observe[i] for observe in trajectoryObserveList]
         plt.subplot(4,3,i+1)
         plt.plot(timeList, np.array([tmpTargetList,tmpObserveList]).T)
+        plt.legend([legend1, legend2])
     return
 
 
@@ -374,33 +383,37 @@ if __name__ == "__main__":
 
     actionTime = 3
     timeLine = [i * 0.2 for i in range(1, int(actionTime / 0.2 + 1))]
-    # trajectory = np.concatenate([HandTuningTrajectory(i) for i in timeLine])
-    trajectory = np.array(xbest)
+    trajectory = np.concatenate([HandTuningTrajectory(i) for i in timeLine])
+    # trajectory = np.array(xbest)
     iteration = 0
     totalReward = 0
     env = Anymal("GUI")
     env.reset()
-    input("Press any key to start\n")
+    # input("Press any key to start\n")
+    np.random.seed(66)
     successCount = 0
-    for i in range(20):
+    for i in range(100):
         observation = env.reset()
         # input("Press any key to start\n")
         # time.sleep(3)
         trajectoryTargetList = []
         trajectoryObserveList = []
-        maxTorqueList = []
+        maxTorqueList1 = []
         maxContactImpulseList = []
-        maxVelocityList = []
+        maxVelocityList1 = []
         rewardList = []
         timeList = []
         for n in range(2 * 3 * SIMULATIONFREQUENCY):
             # action = HandTuningTrajectory(env.t)
-            action = jointTargetsAsFunctionOfTime(env.t)
+            action = jointTargetsAsFunctionOfTime(env.t, timeLine, trajectory)
             observation, reward, done, measurement = env.step(action, addNoise=False)
             # if reward > 0:
             #     print(measurement["baseOrientationVector"].dot([0, 0, -1]))
             # Observe
             # Trajectory following
+            tttorque1 = np.array(measurement['torque'])
+            tttorque1 = np.abs(tttorque1).max()
+            maxTorqueList1.append(tttorque1)
             trajectoryTargetList.append(action)
             trajectoryObserveList.append(measurement['position'])
             # Contact impulse
@@ -417,21 +430,75 @@ if __name__ == "__main__":
             else:
                 maxContactImpulseList.append(0)
             # Max velocity
-            maxVelocityList.append(max(measurement["velocity"]))
+            maxVelocityList1.append(max(np.abs(measurement["velocity"])))
             # Reward
             rewardList.append(reward)
             timeList.append(env.t)
             time.sleep(1.0 / SIMULATIONFREQUENCY)  # Normal speed is 1.0, here's to convenient observe
-            if done:
-                break
+            # if done:
+            #     break
             totalReward += reward
         print("Total reward is %f\n" % totalReward)
         baseOrientation = np.array(p.getEulerFromQuaternion(measurement['baseOrientation']))
         baseOrientation /= np.linalg.norm(baseOrientation)
-        if baseOrientation.dot([0, 0, -1]) > np.cos(0.25 * np.pi):
+        if baseOrientation.dot([0, 0, -1]) > np.cos(0.25 * np.pi) and np.alltrue([measurement['position'][i] < -1 for i in [1, 4, 7, 10]]):
             successCount += 1
             print("I succeed!")
-    DrawFollowingPlot(timeList, trajectoryTargetList, trajectoryObserveList)
+    # trajectory = np.array(xbest)
+    # env.reset()
+    # for i in range(1):
+    #     observation = env.reset()
+    #     # input("Press any key to start\n")
+    #     # time.sleep(3)
+    #     trajectoryTargetList = []
+    #     trajectoryObserveList = []
+    #     maxTorqueList2 = []
+    #     maxContactImpulseList = []
+    #     maxVelocityList2 = []
+    #     rewardList = []
+    #     timeList = []
+    #     for n in range(2 * 3 * SIMULATIONFREQUENCY):
+    #         # action = HandTuningTrajectory(env.t)
+    #         action = jointTargetsAsFunctionOfTime(env.t, timeLine, trajectory)
+    #         observation, reward, done, measurement = env.step(action, addNoise=False)
+    #         # if reward > 0:
+    #         #     print(measurement["baseOrientationVector"].dot([0, 0, -1]))
+    #         # Observe
+    #         # Trajectory following
+    #         tttorque2 = np.array(measurement['torque'])
+    #         tttorque2 = np.abs(tttorque2).max()
+    #         maxTorqueList2.append(tttorque2)
+    #         trajectoryTargetList.append(action)
+    #         trajectoryObserveList.append(measurement['position'])
+    #         # Contact impulse
+    #         contactPoints = p.getContactPoints(env.anymal)
+    #         contactImpulse = []
+    #         for point in contactPoints:
+    #             if point[2] == 0 and point[3] in [link.value for link in FootLinks]:  # Contact between feet and ground
+    #                 continue
+    #             contactImpulse.append(point[9])
+    #             if point[9]>1500:
+    #                 print("Body A:", point[1], "Body B:", point[2], "Link A:", point[3], "Link B:", point[4], "Time:", env.t)
+    #         if contactImpulse != []:
+    #             maxContactImpulseList.append(max(contactImpulse))
+    #         else:
+    #             maxContactImpulseList.append(0)
+    #         # Max velocity
+    #         maxVelocityList2.append(max(np.abs(measurement["velocity"])))
+    #         # Reward
+    #         rewardList.append(reward)
+    #         timeList.append(env.t)
+    #         time.sleep(1.0 / SIMULATIONFREQUENCY)  # Normal speed is 1.0, here's to convenient observe
+    #         if done:
+    #             break
+    #         totalReward += reward
+    #     print("Total reward is %f\n" % totalReward)
+    #     baseOrientation = np.array(p.getEulerFromQuaternion(measurement['baseOrientation']))
+    #     baseOrientation /= np.linalg.norm(baseOrientation)
+    #     if baseOrientation.dot([0, 0, -1]) > np.cos(0.25 * np.pi):
+    #         successCount += 1
+    #         print("I succeed!")
+    # DrawFollowingPlot(timeList, maxTorqueList1, maxTorqueList2, 'Reference', 'CMA-ES')
     # print(successCount/20)
     input("Press any key to quit\n")
     env.close()

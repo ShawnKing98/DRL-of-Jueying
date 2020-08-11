@@ -1,0 +1,59 @@
+newmtl keru
+Ka 0.9 0.9 0.9
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+Ke 0.0 0.0 0.0
+Ni 1.0
+d 1.0
+illum 3
+map_Kd keru.jpg
+map_Ka keru.jpg
+map_Ks keru.jpg
+
+newmtl lidar
+Ka 1.0 1.0 1.0
+Kd 1.0 1.0 1.0
+Ks 1.0 1.0 1.0
+Ke 0.0 0.0 0.0
+Ni 1.0
+d 1.0
+illum 3
+map_Kd lidar.png
+map_Ka lidar.png
+map_Ks lidar.png
+
+newmtl plastic
+Ka 0.9 0.9 0.9
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+Ke 0.0 0.0 0.0
+Ni 1.0
+d 1.0
+illum 3
+
+newmtl compound
+Ka 0.3 0.7 0.99
+Kd 0.3 0.7 0.99
+Ks 0.3 0.7 0.99
+Ke 0.0 0.0 0.0
+Ni 1.0
+d 1.0
+illum 3
+
+newmtl rubber
+Ka 0.9 0.9 0.9
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+Ke 0.0 0.0 0.0
+Ni 1.0
+d 1.0
+illum 1
+
+newmtl steel
+Ka 0.7 0.7 0.7
+Kd 0.2 0.2 0.2
+Ks 0.3 0.3 0.3
+Ke 0.0 0.0 0.0
+Ni 1.0
+d 1.0
+illum 1

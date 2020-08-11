@@ -1,0 +1,29 @@
+seed: 1
+record_video: yes
+
+environment:
+  render: True
+  num_envs: 100
+  num_threads: 40
+  simulation_dt: 0.0025
+  control_dt: 0.005
+  max_time: 6.0
+  forwardVelRewardCoeff: -40
+  velDirectnRewardCoeff: -0.000
+  torqueRewardCoeff: -0.000
+  qdotRewardCoeff: -0.000
+  pitchRewardCoeff: -0.000
+  uniPosRewardCoeff: -1.0
+  uniTauRewardCoeff: -0.01
+  slipRewardCoeff: -0.01
+  smoothRewardCoeff: -5e-7
+  periodRewardCoeff: 50
+  terminalRewardCoeff: -30
+  max_arena: 10
+  log2CSV: False
+
+  p_yaml: 200
+  d_yaml: 2
+
+  period: 0.3
+  signal_num: 1

@@ -2,132 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d41503e2-5d64-4b7a-8b92-a81bc0cbedfa" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/shawn.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/shawn.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/env_config_raisim.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/continue_ppo.py" beforeDir="false" afterPath="$PROJECT_DIR$/continue_ppo.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/env_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/env_config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 12:43:06 2020/config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 12:43:06 2020/progress.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 12:45:24 2020/config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 12:45:24 2020/progress.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 12:45:24 2020/tf1_save/model_info.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 12:45:24 2020/tf1_save/saved_model.pb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 12:45:24 2020/tf1_save/variables/variables.data-00000-of-00001" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 12:45:24 2020/tf1_save/variables/variables.index" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 12:45:24 2020/vars.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:03:20 2020/config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:03:20 2020/progress.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:03:20 2020/tf1_save/model_info.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:03:20 2020/tf1_save/saved_model.pb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:03:20 2020/tf1_save/variables/variables.data-00000-of-00001" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:03:20 2020/tf1_save/variables/variables.index" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:03:20 2020/vars.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:06:14 2020/config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:06:14 2020/progress.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:06:14 2020/tf1_save/model_info.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:06:14 2020/tf1_save/saved_model.pb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:06:14 2020/tf1_save/variables/variables.data-00000-of-00001" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:06:14 2020/tf1_save/variables/variables.index" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:06:14 2020/vars.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:11:16 2020/config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:11:16 2020/progress.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:11:16 2020/tf1_save/model_info.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:11:16 2020/tf1_save/saved_model.pb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:11:16 2020/tf1_save/variables/variables.data-00000-of-00001" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:11:16 2020/tf1_save/variables/variables.index" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:11:16 2020/vars.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:16:26 2020/config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:16:26 2020/progress.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:17:04 2020/config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:17:04 2020/progress.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:17:04 2020/tf1_save/model_info.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:17:04 2020/tf1_save/saved_model.pb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:17:04 2020/tf1_save/variables/variables.data-00000-of-00001" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:17:04 2020/tf1_save/variables/variables.index" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:17:04 2020/vars.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:18:51 2020/config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:18:51 2020/progress.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:18:51 2020/tf1_save/model_info.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:18:51 2020/tf1_save/saved_model.pb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:18:51 2020/tf1_save/variables/variables.data-00000-of-00001" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:18:51 2020/tf1_save/variables/variables.index" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 13:18:51 2020/vars.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 19:09:38 2020/config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 19:09:38 2020/progress.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 19:09:38 2020/tf1_save/model_info.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 19:09:38 2020/tf1_save/saved_model.pb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 19:09:38 2020/tf1_save/variables/variables.data-00000-of-00001" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 19:09:38 2020/tf1_save/variables/variables.index" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 19:09:38 2020/vars.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 19:13:21 2020/config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 19:13:21 2020/progress.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 19:13:21 2020/tf1_save/model_info.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 19:13:21 2020/tf1_save/saved_model.pb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 19:13:21 2020/tf1_save/variables/variables.data-00000-of-00001" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 19:13:21 2020/tf1_save/variables/variables.index" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 19:13:21 2020/vars.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:39:04 2020/config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:39:04 2020/progress.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:41:06 2020/config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:41:06 2020/progress.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:43:38 2020/config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:43:38 2020/progress.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:43:38 2020/tf1_save/model_info.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:43:38 2020/tf1_save/saved_model.pb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:43:38 2020/tf1_save/variables/variables.data-00000-of-00001" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:43:38 2020/tf1_save/variables/variables.index" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:43:38 2020/vars.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:44:49 2020/config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:44:49 2020/progress.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:44:49 2020/tf1_save/model_info.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:44:49 2020/tf1_save/saved_model.pb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:44:49 2020/tf1_save/variables/variables.data-00000-of-00001" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:44:49 2020/tf1_save/variables/variables.index" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:44:49 2020/vars.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:46:30 2020/config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:46:30 2020/progress.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:46:30 2020/tf1_save/model_info.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:46:30 2020/tf1_save/saved_model.pb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:46:30 2020/tf1_save/variables/variables.data-00000-of-00001" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:46:30 2020/tf1_save/variables/variables.index" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:46:30 2020/vars.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:51:43 2020/config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:51:43 2020/progress.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:51:43 2020/tf1_save/model_info.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:51:43 2020/tf1_save/saved_model.pb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:51:43 2020/tf1_save/variables/variables.data-00000-of-00001" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:51:43 2020/tf1_save/variables/variables.index" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 21:51:43 2020/vars.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 23:29:25 2020/config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 23:29:25 2020/progress.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 23:29:25 2020/tf1_save/model_info.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 23:29:25 2020/tf1_save/saved_model.pb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 23:29:25 2020/tf1_save/variables/variables.data-00000-of-00001" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 23:29:25 2020/tf1_save/variables/variables.index" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Fri May  1 23:29:25 2020/vars.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Thu Apr 30 22:23:37 2020/config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Thu Apr 30 22:23:37 2020/progress.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Thu Apr 30 22:52:31 2020/config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Thu Apr 30 22:52:31 2020/progress.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Thu Apr 30 23:08:37 2020/config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Thu Apr 30 23:08:37 2020/progress.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Thu Apr 30 23:08:37 2020/tf1_save/model_info.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Thu Apr 30 23:08:37 2020/tf1_save/saved_model.pb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Thu Apr 30 23:08:37 2020/tf1_save/variables/variables.data-00000-of-00001" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Thu Apr 30 23:08:37 2020/tf1_save/variables/variables.index" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Thu Apr 30 23:08:37 2020/vars.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Thu Apr 30 23:10:52 2020/config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Thu Apr 30 23:10:52 2020/progress.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Tue Apr 28 22:50:31 2020/config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Tue Apr 28 22:50:31 2020/progress.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Tue Apr 28 22:50:31 2020/tf1_save/model_info.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Tue Apr 28 22:50:31 2020/tf1_save/model_info_backup.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Tue Apr 28 22:50:31 2020/tf1_save/saved_model.pb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Tue Apr 28 22:50:31 2020/tf1_save/variables/variables.data-00000-of-00001" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Tue Apr 28 22:50:31 2020/tf1_save/variables/variables.index" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/Tue Apr 28 22:50:31 2020/vars.pkl" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/jueying_ff.py" beforeDir="false" afterPath="$PROJECT_DIR$/jueying_ff.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/my_test_policy.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_test_policy.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/my_utilities.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_utilities.py" afterDir="false" />
     </list>
@@ -155,11 +33,21 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$/spinningup/spinup/utils/plot.py" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/raisim" />
+    <property name="settings.editor.selected.configurable" value="preferences.editor" />
   </component>
-  <component name="RunManager" selected="Python.my_test_policy">
-    <configuration name="continue_ppo" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/raisim" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/" />
+      <recent name="$PROJECT_DIR$/raisim" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.env_config_raisim">
+    <configuration name="draft" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="DRL" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -167,11 +55,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/experiments (2)" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/continue_ppo.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/draft.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -201,6 +89,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="env_config_raisim" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="DRL" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/env_config_raisim.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="jueying_ff" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="DRL" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -215,24 +124,6 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/jueying_ff.py" />
       <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="DRL" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
-      <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -244,6 +135,9 @@
       <module name="DRL" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -260,14 +154,15 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.my_test_policy" />
-        <item itemvalue="Python.main" />
-        <item itemvalue="Python.jueying_ff" />
+        <item itemvalue="Python.env_config_raisim" />
         <item itemvalue="Python.env_config" />
-        <item itemvalue="Python.continue_ppo" />
+        <item itemvalue="Python.draft" />
+        <item itemvalue="Python.my_test_policy" />
+        <item itemvalue="Python.jueying_ff" />
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="project-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -282,75 +177,93 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
+    <state x="2553" y="330" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1596611797600">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2553" y="330" key="#com.intellij.fileTypes.FileTypeChooser/81.24.1839.1056/1920.0.1920.1080@1920.0.1920.1080" timestamp="1596611797600" />
     <state x="2324" y="693" key="#xdebugger.XInspectDialog" timestamp="1588485381363">
       <screen x="81" y="24" width="2919" height="1896" />
     </state>
     <state x="2324" y="693" key="#xdebugger.XInspectDialog/81.24.2919.1896@81.24.2919.1896" timestamp="1588485381363" />
-    <state x="1995" y="174" width="880" height="1726" key="DiffContextDialog" timestamp="1588339356344">
-      <screen x="1920" y="0" width="1080" height="1920" />
-    </state>
-    <state x="1995" y="174" width="880" height="1726" key="DiffContextDialog/0.840.1920.1080/1920.0.1080.1920@1920.0.1080.1920" timestamp="1588339356344" />
-    <state x="2248" y="715" key="FileChooserDialogImpl" timestamp="1588330056854">
-      <screen x="1920" y="0" width="1080" height="1920" />
-    </state>
-    <state x="2248" y="715" key="FileChooserDialogImpl/0.840.1920.1080/1920.0.1080.1920@1920.0.1080.1920" timestamp="1588330056854" />
-    <state width="1034" height="818" key="GridCell.Tab.0.bottom" timestamp="1589296243327">
-      <screen x="1920" y="0" width="1080" height="1920" />
-    </state>
-    <state width="1034" height="818" key="GridCell.Tab.0.bottom/0.840.1920.1080/1920.0.1080.1920@1920.0.1080.1920" timestamp="1589296243327" />
-    <state width="1793" height="423" key="GridCell.Tab.0.bottom/81.24.1839.1056@81.24.1839.1056" timestamp="1589266751767" />
-    <state width="1034" height="874" key="GridCell.Tab.0.bottom/81.24.2919.1896@81.24.2919.1896" timestamp="1588572103495" />
-    <state width="1034" height="818" key="GridCell.Tab.0.center" timestamp="1589296243327">
-      <screen x="1920" y="0" width="1080" height="1920" />
-    </state>
-    <state width="1034" height="818" key="GridCell.Tab.0.center/0.840.1920.1080/1920.0.1080.1920@1920.0.1080.1920" timestamp="1589296243327" />
-    <state width="1793" height="423" key="GridCell.Tab.0.center/81.24.1839.1056@81.24.1839.1056" timestamp="1589266751767" />
-    <state width="1034" height="874" key="GridCell.Tab.0.center/81.24.2919.1896@81.24.2919.1896" timestamp="1588572103495" />
-    <state width="1034" height="818" key="GridCell.Tab.0.left" timestamp="1589296243327">
-      <screen x="1920" y="0" width="1080" height="1920" />
-    </state>
-    <state width="1034" height="818" key="GridCell.Tab.0.left/0.840.1920.1080/1920.0.1080.1920@1920.0.1080.1920" timestamp="1589296243327" />
-    <state width="1793" height="423" key="GridCell.Tab.0.left/81.24.1839.1056@81.24.1839.1056" timestamp="1589266751767" />
-    <state width="1034" height="874" key="GridCell.Tab.0.left/81.24.2919.1896@81.24.2919.1896" timestamp="1588572103494" />
-    <state width="1034" height="818" key="GridCell.Tab.0.right" timestamp="1589296243327">
-      <screen x="1920" y="0" width="1080" height="1920" />
-    </state>
-    <state width="1034" height="818" key="GridCell.Tab.0.right/0.840.1920.1080/1920.0.1080.1920@1920.0.1080.1920" timestamp="1589296243327" />
-    <state width="1793" height="423" key="GridCell.Tab.0.right/81.24.1839.1056@81.24.1839.1056" timestamp="1589266751767" />
-    <state width="1034" height="874" key="GridCell.Tab.0.right/81.24.2919.1896@81.24.2919.1896" timestamp="1588572103495" />
-    <state width="1034" height="818" key="GridCell.Tab.1.bottom" timestamp="1589296243327">
-      <screen x="1920" y="0" width="1080" height="1920" />
-    </state>
-    <state width="1034" height="818" key="GridCell.Tab.1.bottom/0.840.1920.1080/1920.0.1080.1920@1920.0.1080.1920" timestamp="1589296243327" />
-    <state width="1793" height="423" key="GridCell.Tab.1.bottom/81.24.1839.1056@81.24.1839.1056" timestamp="1589266751768" />
-    <state width="1034" height="874" key="GridCell.Tab.1.bottom/81.24.2919.1896@81.24.2919.1896" timestamp="1588572103496" />
-    <state width="1034" height="818" key="GridCell.Tab.1.center" timestamp="1589296243327">
-      <screen x="1920" y="0" width="1080" height="1920" />
-    </state>
-    <state width="1034" height="818" key="GridCell.Tab.1.center/0.840.1920.1080/1920.0.1080.1920@1920.0.1080.1920" timestamp="1589296243327" />
-    <state width="1793" height="423" key="GridCell.Tab.1.center/81.24.1839.1056@81.24.1839.1056" timestamp="1589266751768" />
-    <state width="1034" height="874" key="GridCell.Tab.1.center/81.24.2919.1896@81.24.2919.1896" timestamp="1588572103495" />
-    <state width="1034" height="818" key="GridCell.Tab.1.left" timestamp="1589296243327">
-      <screen x="1920" y="0" width="1080" height="1920" />
-    </state>
-    <state width="1034" height="818" key="GridCell.Tab.1.left/0.840.1920.1080/1920.0.1080.1920@1920.0.1080.1920" timestamp="1589296243327" />
-    <state width="1793" height="423" key="GridCell.Tab.1.left/81.24.1839.1056@81.24.1839.1056" timestamp="1589266751767" />
-    <state width="1034" height="874" key="GridCell.Tab.1.left/81.24.2919.1896@81.24.2919.1896" timestamp="1588572103495" />
-    <state width="1034" height="818" key="GridCell.Tab.1.right" timestamp="1589296243327">
-      <screen x="1920" y="0" width="1080" height="1920" />
-    </state>
-    <state width="1034" height="818" key="GridCell.Tab.1.right/0.840.1920.1080/1920.0.1080.1920@1920.0.1080.1920" timestamp="1589296243327" />
-    <state width="1793" height="423" key="GridCell.Tab.1.right/81.24.1839.1056@81.24.1839.1056" timestamp="1589266751768" />
-    <state width="1034" height="874" key="GridCell.Tab.1.right/81.24.2919.1896@81.24.2919.1896" timestamp="1588572103496" />
-    <state x="107" y="292" width="1014" height="730" key="SettingsEditor" timestamp="1588049216440">
+    <state width="566" height="646" key="DebuggerActiveHint" timestamp="1596858653149">
       <screen x="81" y="24" width="1839" height="1056" />
     </state>
-    <state x="1935" y="487" key="SettingsEditor/0.840.1920.1080/1920.0.1080.1920@1920.0.1080.1920" timestamp="1586167331456" />
-    <state x="107" y="292" width="1014" height="730" key="SettingsEditor/81.24.1839.1056@81.24.1839.1056" timestamp="1588049216440" />
-    <state x="2123" y="444" width="672" height="678" key="search.everywhere.popup" timestamp="1589295680346">
+    <state width="566" height="646" key="DebuggerActiveHint/81.24.1839.1056@81.24.1839.1056" timestamp="1596858653149" />
+    <state x="1223" y="417" key="FileChooserDialogImpl" timestamp="1596594485992">
+      <screen x="81" y="24" width="3759" height="1056" />
+    </state>
+    <state x="1223" y="417" key="FileChooserDialogImpl/81.24.3759.1056@81.24.3759.1056" timestamp="1596594485992" />
+    <state width="1030" height="525" key="GridCell.Tab.0.bottom" timestamp="1597129281168">
       <screen x="1920" y="0" width="1080" height="1920" />
     </state>
-    <state x="2123" y="444" width="672" height="678" key="search.everywhere.popup/0.840.1920.1080/1920.0.1080.1920@1920.0.1080.1920" timestamp="1589295680346" />
+    <state width="1030" height="525" key="GridCell.Tab.0.bottom/0.840.1920.1080/1920.0.1080.1920@1920.0.1080.1920" timestamp="1597129281168" />
+    <state width="1870" height="349" key="GridCell.Tab.0.bottom/81.24.1839.1056/1920.0.1920.1080@1920.0.1920.1080" timestamp="1596681599291" />
+    <state width="870" height="397" key="GridCell.Tab.0.bottom/81.24.1839.1056@81.24.1839.1056" timestamp="1596858248686" />
+    <state width="1030" height="662" key="GridCell.Tab.0.bottom/81.24.2919.1896@81.24.2919.1896" timestamp="1597025631949" />
+    <state width="1030" height="525" key="GridCell.Tab.0.center" timestamp="1597129281168">
+      <screen x="1920" y="0" width="1080" height="1920" />
+    </state>
+    <state width="1030" height="525" key="GridCell.Tab.0.center/0.840.1920.1080/1920.0.1080.1920@1920.0.1080.1920" timestamp="1597129281168" />
+    <state width="1870" height="349" key="GridCell.Tab.0.center/81.24.1839.1056/1920.0.1920.1080@1920.0.1920.1080" timestamp="1596681599291" />
+    <state width="870" height="397" key="GridCell.Tab.0.center/81.24.1839.1056@81.24.1839.1056" timestamp="1596858248686" />
+    <state width="1030" height="662" key="GridCell.Tab.0.center/81.24.2919.1896@81.24.2919.1896" timestamp="1597025631949" />
+    <state width="1030" height="525" key="GridCell.Tab.0.left" timestamp="1597129281168">
+      <screen x="1920" y="0" width="1080" height="1920" />
+    </state>
+    <state width="1030" height="525" key="GridCell.Tab.0.left/0.840.1920.1080/1920.0.1080.1920@1920.0.1080.1920" timestamp="1597129281168" />
+    <state width="1870" height="349" key="GridCell.Tab.0.left/81.24.1839.1056/1920.0.1920.1080@1920.0.1920.1080" timestamp="1596681599291" />
+    <state width="870" height="397" key="GridCell.Tab.0.left/81.24.1839.1056@81.24.1839.1056" timestamp="1596858248685" />
+    <state width="1030" height="662" key="GridCell.Tab.0.left/81.24.2919.1896@81.24.2919.1896" timestamp="1597025631948" />
+    <state width="1030" height="525" key="GridCell.Tab.0.right" timestamp="1597129281168">
+      <screen x="1920" y="0" width="1080" height="1920" />
+    </state>
+    <state width="1030" height="525" key="GridCell.Tab.0.right/0.840.1920.1080/1920.0.1080.1920@1920.0.1080.1920" timestamp="1597129281168" />
+    <state width="1870" height="349" key="GridCell.Tab.0.right/81.24.1839.1056/1920.0.1920.1080@1920.0.1920.1080" timestamp="1596681599291" />
+    <state width="870" height="397" key="GridCell.Tab.0.right/81.24.1839.1056@81.24.1839.1056" timestamp="1596858248686" />
+    <state width="1030" height="662" key="GridCell.Tab.0.right/81.24.2919.1896@81.24.2919.1896" timestamp="1597025631949" />
+    <state width="1030" height="525" key="GridCell.Tab.1.bottom" timestamp="1597129285417">
+      <screen x="1920" y="0" width="1080" height="1920" />
+    </state>
+    <state width="1030" height="525" key="GridCell.Tab.1.bottom/0.840.1920.1080/1920.0.1080.1920@1920.0.1080.1920" timestamp="1597129285417" />
+    <state width="870" height="397" key="GridCell.Tab.1.bottom/81.24.1839.1056@81.24.1839.1056" timestamp="1596858254802" />
+    <state width="1030" height="525" key="GridCell.Tab.1.bottom/81.24.2919.1896@81.24.2919.1896" timestamp="1596983586969" />
+    <state width="1030" height="525" key="GridCell.Tab.1.center" timestamp="1597129285417">
+      <screen x="1920" y="0" width="1080" height="1920" />
+    </state>
+    <state width="1030" height="525" key="GridCell.Tab.1.center/0.840.1920.1080/1920.0.1080.1920@1920.0.1080.1920" timestamp="1597129285417" />
+    <state width="870" height="397" key="GridCell.Tab.1.center/81.24.1839.1056@81.24.1839.1056" timestamp="1596858254800" />
+    <state width="1030" height="525" key="GridCell.Tab.1.center/81.24.2919.1896@81.24.2919.1896" timestamp="1596983586969" />
+    <state width="1030" height="525" key="GridCell.Tab.1.left" timestamp="1597129285417">
+      <screen x="1920" y="0" width="1080" height="1920" />
+    </state>
+    <state width="1030" height="525" key="GridCell.Tab.1.left/0.840.1920.1080/1920.0.1080.1920@1920.0.1080.1920" timestamp="1597129285417" />
+    <state width="870" height="397" key="GridCell.Tab.1.left/81.24.1839.1056@81.24.1839.1056" timestamp="1596858254799" />
+    <state width="1030" height="525" key="GridCell.Tab.1.left/81.24.2919.1896@81.24.2919.1896" timestamp="1596983586969" />
+    <state width="1030" height="525" key="GridCell.Tab.1.right" timestamp="1597129285417">
+      <screen x="1920" y="0" width="1080" height="1920" />
+    </state>
+    <state width="1030" height="525" key="GridCell.Tab.1.right/0.840.1920.1080/1920.0.1080.1920@1920.0.1080.1920" timestamp="1597129285417" />
+    <state width="870" height="397" key="GridCell.Tab.1.right/81.24.1839.1056@81.24.1839.1056" timestamp="1596858254801" />
+    <state width="1030" height="525" key="GridCell.Tab.1.right/81.24.2919.1896@81.24.2919.1896" timestamp="1596983586969" />
+    <state x="1941" y="274" width="1014" height="730" key="SettingsEditor" timestamp="1596766133404">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="1941" y="274" key="SettingsEditor/81.24.1839.1056/1920.0.1920.1080@1920.0.1920.1080" timestamp="1596766133404" />
+    <state x="107" y="292" width="1014" height="730" key="SettingsEditor/81.24.1839.1056@81.24.1839.1056" timestamp="1594630349191" />
+    <state width="540" height="963" key="XDebugger.FullValuePopup" timestamp="1596983545960">
+      <screen x="81" y="24" width="2919" height="1896" />
+    </state>
+    <state width="540" height="963" key="XDebugger.FullValuePopup/81.24.2919.1896@81.24.2919.1896" timestamp="1596983545960" />
+    <state x="81" y="834" width="320" height="1019" maximized="true" key="dock-window-1" timestamp="1597115498886">
+      <screen x="0" y="840" width="1920" height="1080" />
+    </state>
+    <state x="81" y="834" width="320" height="1019" maximized="true" key="dock-window-1/0.840.1920.1080/1920.0.1080.1920@1920.0.1080.1920" timestamp="1597115498886" />
+    <state x="1524" y="248" width="870" height="1005" key="dock-window-1/81.24.1839.1056@81.24.1839.1056" timestamp="1596854903813" />
+    <state x="473" y="864" width="870" height="1005" maximized="true" key="dock-window-1/81.24.2919.1896@81.24.2919.1896" timestamp="1596962545254" />
+    <state x="2123" y="444" width="672" height="678" key="search.everywhere.popup" timestamp="1590279534608">
+      <screen x="1920" y="0" width="1080" height="1920" />
+    </state>
+    <state x="2123" y="444" width="672" height="678" key="search.everywhere.popup/0.840.1920.1080/1920.0.1080.1920@1920.0.1080.1920" timestamp="1590279534608" />
     <state x="427" y="268" width="1145" height="373" key="search.everywhere.popup/81.24.1839.1056@81.24.1839.1056" timestamp="1589265834189" />
   </component>
   <component name="XDebuggerManager">
@@ -363,7 +276,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/env_config.py</url>
-          <line>463</line>
+          <line>469</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -387,9 +300,19 @@
           <option name="timeStamp" value="19" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/jueying_ff.py</url>
+          <line>498</line>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/env_config.py</url>
-          <line>362</line>
-          <option name="timeStamp" value="22" />
+          <line>295</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/env_config_raisim.py</url>
+          <line>365</line>
+          <option name="timeStamp" value="26" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

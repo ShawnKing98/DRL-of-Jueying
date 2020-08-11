@@ -150,6 +150,64 @@ def logisticKernal(x):
     return -1/(np.exp(x)+2+np.exp(-x))
 
 
+def HandTuningTrajectory_raisim(t):
+    #Time
+    timePoint = np.array([0, 2, 2.1, 2.2, 2.3])
+
+    # LF_HAA
+    timePoint_LF_HAA = np.array([0, 1, 1.1, 1.2, 2, 2.1, 3])
+    LF_HAA_Point = np.array([FALL_JOINT_POSITIONS[0], 1.5, -1, -1, 0, -1, 0])
+    LF_HAA_Target = np.interp(t, timePoint_LF_HAA, LF_HAA_Point)
+
+    # LF_HFE
+    LF_HFE_Point = np.array([FALL_JOINT_POSITIONS[1], 0, -1.57, -1.57, -1.6])
+    LF_HFE_Target = np.interp(t, timePoint, LF_HFE_Point)
+
+    # LF_KFE
+    LF_KFE_Point = np.array([FALL_JOINT_POSITIONS[2], -2, -1.57, 0, 0])
+    LF_KFE_Target = np.interp(t, timePoint, LF_KFE_Point)
+
+    # RF_HAA
+    timePoint_RF_HAA = np.append([0, 1], timePoint[1:])
+    RF_HAA_Point = np.array([FALL_JOINT_POSITIONS[3], 0, -1.5, 0, 0, 0])
+    RF_HAA_Target = np.interp(t, timePoint_RF_HAA, RF_HAA_Point)
+
+    # RF_HFE
+    RF_HFE_Point = np.array([FALL_JOINT_POSITIONS[4], -2.0, -2.0, -2.0, -1.6])
+    RF_HFE_Target = np.interp(t, timePoint, RF_HFE_Point)
+
+    # RF_KFE
+    timePoint_RF_KFE = np.append(timePoint, [3])
+    RF_KFE_Point = np.array([FALL_JOINT_POSITIONS[5], -0.2, -1, -1.3, -1.3, 0])
+    RF_KFE_Target = np.interp(t, timePoint_RF_KFE, RF_KFE_Point)
+
+    # LH_HAA
+    LH_HAA_Target = LF_HAA_Target
+    # LH_HFE
+    LH_HFE_Target = LF_HFE_Target
+    # LH_KFE
+    LH_KFE_Target = -LF_KFE_Target
+
+    # RH_HAA
+    timePoint_RH_HAA = np.array([0, 0.5, 1, 2, 2.1, 2.2, 2.3])
+    RH_HAA_Point = np.array([FALL_JOINT_POSITIONS[9], 0, -1.5, -1.5, 0, 0, 0])
+    RH_HAA_Target = np.interp(t, timePoint_RH_HAA, RH_HAA_Point)
+
+    # RH_HFE
+    timePoint_RH_HFE = np.array([0, 0.5, 3])
+    RH_HFE_Point = np.array([FALL_JOINT_POSITIONS[10], -1.8, -1.6])
+    RH_HFE_Target = np.interp(t, timePoint_RH_HFE, RH_HFE_Point)
+
+    # RH_KFE
+    timePoint_RH_KFE = np.array([0, 0.5, 1, 2, 2.1, 3])
+    RH_KFE_Point = np.array([FALL_JOINT_POSITIONS[11], 0.2, 1, 1, 1.3, 0])
+    RH_KFE_Target = np.interp(t, timePoint_RH_KFE, RH_KFE_Point)
+
+    jointTarget = np.array([LF_HAA_Target, LF_HFE_Target, LF_KFE_Target, RF_HAA_Target, RF_HFE_Target, RF_KFE_Target, LH_HAA_Target, LH_HFE_Target, LH_KFE_Target, RH_HAA_Target, RH_HFE_Target, RH_KFE_Target])
+
+    return jointTarget
+
+
 def read_target_trajectory(fpath):
     xrecentbest = open(fpath, 'r')
     xrecentbestList = xrecentbest.readlines()
